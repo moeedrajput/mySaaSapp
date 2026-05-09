@@ -1,0 +1,287 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ViraLoom Premium Design System
+   Dark-themed, glassmorphism, high-end aesthetic
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+
+  /* Brand Colors */
+  --color-brand-50: #f0f0ff;
+  --color-brand-100: #e0e0ff;
+  --color-brand-200: #c4b5fd;
+  --color-brand-300: #a78bfa;
+  --color-brand-400: #8b5cf6;
+  --color-brand-500: #7c3aed;
+  --color-brand-600: #6d28d9;
+  --color-brand-700: #5b21b6;
+  --color-brand-800: #4c1d95;
+  --color-brand-900: #3b0f7a;
+
+  /* Accent - Neon Cyan */
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Success - Emerald */
+  --color-success-400: #34d399;
+  --color-success-500: #10b981;
+
+  /* Warning - Amber */
+  --color-warning-400: #fbbf24;
+  --color-warning-500: #f59e0b;
+
+  /* Error - Rose */
+  --color-error-400: #fb7185;
+  --color-error-500: #f43f5e;
+
+  /* Surface Colors (Dark Theme) */
+  --color-surface-950: #030712;
+  --color-surface-900: #0a0f1e;
+  --color-surface-800: #111827;
+  --color-surface-700: #1e293b;
+  --color-surface-600: #334155;
+  --color-surface-500: #475569;
+}
+
+:root {
+  --background: #030712;
+  --foreground: #f1f5f9;
+}
+
+/* ============================================================
+   Base Styles
+   ============================================================ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Glassmorphism Utilities
+   ============================================================ */
+
+.glass {
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.glass-light {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.glass-brand {
+  background: rgba(124, 58, 237, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(17, 24, 39, 0.7) 0%,
+    rgba(30, 41, 59, 0.4) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.04),
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.glass-card:hover {
+  border-color: rgba(139, 92, 246, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.08),
+    0 8px 40px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(139, 92, 246, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================
+   Gradient Utilities
+   ============================================================ */
+
+.gradient-brand {
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+}
+
+.gradient-brand-subtle {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+}
+
+.gradient-text-brand {
+  background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-shine {
+  background: linear-gradient(90deg, #a78bfa, #22d3ee, #a78bfa);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* ============================================================
+   Ambient Glow Effects
+   ============================================================ */
+
+.glow-brand {
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(124, 58, 237, 0.05);
+}
+
+.glow-accent {
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.15), 0 0 80px rgba(6, 182, 212, 0.05);
+}
+
+.glow-dot {
+  box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+}
+
+/* ============================================================
+   Skeleton Loading
+   ============================================================ */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 8px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.06) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 2s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================================
+   Pulse Animation for live indicators
+   ============================================================ */
+
+.pulse-live {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 4px currentColor;
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 12px currentColor;
+  }
+}
+
+/* ============================================================
+   Background Mesh Gradient
+   ============================================================ */
+
+.bg-mesh {
+  background-image:
+    radial-gradient(at 27% 37%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+    radial-gradient(at 97% 21%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, rgba(124, 58, 237, 0.08) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, rgba(6, 182, 212, 0.06) 0px, transparent 50%);
+}
+
+/* ============================================================
+   Sidebar transition
+   ============================================================ */
+
+.sidebar-transition {
+  transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1), padding 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   Focus Styles
+   ============================================================ */
+
+*:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Custom input styling
+   ============================================================ */
+
+input, textarea, select {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.4);
+}
