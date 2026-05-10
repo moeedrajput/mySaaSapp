@@ -97,10 +97,10 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            <Link href="/login" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
               Login
             </Link>
-            <Link href="/dashboard" className="px-5 py-2 rounded-xl bg-white text-black text-sm font-bold hover:bg-slate-200 transition-all">
+            <Link href="/signup" className="px-5 py-2 rounded-xl bg-white text-black text-sm font-bold hover:bg-slate-200 transition-all">
               Sign Up
             </Link>
           </div>
