@@ -5,7 +5,6 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2, Mail, Lock, Video, User } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -82,12 +81,12 @@ export default function SignupPage() {
             We've sent a verification link to <span className="text-white font-medium">{email}</span>. 
             Please click the link to activate your account.
           </p>
-          <Button
+          <button
             onClick={() => router.push('/login')}
-            className="w-full bg-slate-800 hover:bg-slate-700 text-white rounded-xl"
+            className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium transition-colors"
           >
             Return to login
-          </Button>
+          </button>
         </div>
       </div>
     );
@@ -213,14 +212,14 @@ export default function SignupPage() {
               <p className="mt-1.5 text-xs text-slate-500">Must be at least 6 characters</p>
             </div>
 
-            <Button
+            <button
               type="submit"
               disabled={loading || googleLoading}
               className="w-full py-3 mt-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
               {loading && <Loader2 className="h-5 w-5 animate-spin" />}
               {loading ? 'Creating account...' : 'Create Account'}
-            </Button>
+            </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-400">

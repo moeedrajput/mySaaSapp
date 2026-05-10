@@ -5,7 +5,6 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2, Mail, Lock, Video } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -158,14 +157,14 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button
+            <button
               type="submit"
               disabled={loading || googleLoading}
               className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
               {loading && <Loader2 className="h-5 w-5 animate-spin" />}
               {loading ? 'Signing in...' : 'Sign In'}
-            </Button>
+            </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-400">
