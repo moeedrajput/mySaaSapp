@@ -10,7 +10,7 @@ import {
   Plus,
   ChevronDown,
   LogOut,
-  User as UserIcon,
+  User,
   HelpCircle,
   Moon,
   Sparkles,
