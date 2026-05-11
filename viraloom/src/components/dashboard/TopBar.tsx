@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bell,
@@ -8,21 +10,43 @@ import {
   Plus,
   ChevronDown,
   LogOut,
-  User,
+  User as UserIcon,
   HelpCircle,
   Moon,
   Sparkles,
   Menu,
 } from "lucide-react";
+import { USER_DATA } from "@/lib/constants";
 
 interface TopBarProps {
   onMobileMenuToggle: () => void;
 }
 
 export default function TopBar({ onMobileMenuToggle }: TopBarProps) {
+  const router = useRouter();
+  const supabase = createClient();
   const [showSearch, setShowSearch] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase.auth]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  };
+
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || USER_DATA.name;
+  const initial = displayName ? displayName.charAt(0).toUpperCase() : 'U';
+  const avatarUrl = user?.user_metadata?.avatar_url;
 
   const notifications = [
     {
@@ -194,12 +218,16 @@ export default function TopBar({ onMobileMenuToggle }: TopBarProps) {
             }}
             className="flex items-center gap-3 p-1.5 pr-3 rounded-xl hover:bg-white/[0.04] transition-colors"
           >
-            <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-brand-500/20">
-              M
+            <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-brand-500/20 overflow-hidden">
+              {avatarUrl ? (
+                <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+              ) : (
+                <span>{initial}</span>
+              )}
             </div>
             <div className="hidden sm:block text-left">
               <p className="text-sm font-medium text-white leading-none">
-                Moeed
+                {displayName}
               </p>
               <p className="text-[10px] text-slate-500 mt-0.5 flex items-center gap-1">
                 <Sparkles size={8} className="text-brand-400" />
@@ -243,12 +271,15 @@ export default function TopBar({ onMobileMenuToggle }: TopBarProps) {
                       </button>
                     ))}
                   </div>
-                  <div className="border-t border-white/[0.06] p-2">
-                    <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-error-400 hover:bg-error-400/10 transition-colors">
-                      <LogOut size={16} />
-                      Sign Out
-                    </button>
-                  </div>
+                    <div className="border-t border-white/[0.06] p-2">
+                      <button 
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-error-400 hover:bg-error-400/10 transition-colors"
+                      >
+                        <LogOut size={16} />
+                        Sign Out
+                      </button>
+                    </div>
                 </motion.div>
               </>
             )}

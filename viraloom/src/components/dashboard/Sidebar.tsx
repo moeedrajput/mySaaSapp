@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -55,13 +56,34 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClient();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase.auth]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  };
+
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || USER_DATA.name;
+  const initial = displayName ? displayName.charAt(0).toUpperCase() : 'U';
+  const displayEmail = user?.email || '';
+  const avatarUrl = user?.user_metadata?.avatar_url;
 
   return (
     <motion.aside
-      className={`fixed top-0 left-0 h-screen z-40 flex flex-col bg-surface-900/80 backdrop-blur-2xl border-r border-white/[0.04] sidebar-transition ${
-        collapsed ? "w-[72px]" : "w-[260px]"
-      }`}
+      className={`fixed top-0 left-0 h-screen z-40 flex flex-col bg-surface-900/80 backdrop-blur-2xl border-r border-white/[0.04] sidebar-transition ${collapsed ? "w-[72px]" : "w-[260px]"
+        }`}
       initial={false}
       animate={{ width: collapsed ? 72 : 260 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
@@ -93,11 +115,10 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
               href={item.href}
               onMouseEnter={() => setHoveredItem(item.href)}
               onMouseLeave={() => setHoveredItem(null)}
-              className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group ${
-                isActive
-                  ? "text-white"
-                  : "text-slate-400 hover:text-white"
-              }`}
+              className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 group ${isActive
+                ? "text-white"
+                : "text-slate-400 hover:text-white"
+                }`}
             >
               {/* Active indicator background */}
               {isActive && (
@@ -174,9 +195,8 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Credits Card */}
       <div className="px-3 py-2">
         <div
-          className={`rounded-xl overflow-hidden ${
-            collapsed ? "p-2" : "p-4"
-          }`}
+          className={`rounded-xl overflow-hidden ${collapsed ? "p-2" : "p-4"
+            }`}
           style={{
             background:
               "linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(6,182,212,0.1) 100%)",
@@ -223,23 +243,27 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* User Avatar Section */}
       <div className="p-4 border-t border-white/[0.04]">
         <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-          <div className="w-10 h-10 rounded-xl bg-surface-800 border border-white/[0.06] flex items-center justify-center text-brand-400 relative">
-            <User size={20} />
-            <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-success-500 border-2 border-surface-900 rounded-full" />
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 border border-white/[0.1] flex items-center justify-center text-white relative overflow-hidden flex-shrink-0 shadow-lg shadow-brand-500/20">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={displayName} className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-bold text-sm">{initial}</span>
+            )}
+            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success-500 border-2 border-surface-900 rounded-full" />
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white truncate">{USER_DATA.name}</p>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="inline-block px-1.5 py-0.5 rounded-md bg-brand-500/10 text-brand-400 text-[10px] font-black uppercase tracking-wider border border-brand-500/20">
-                  {USER_DATA.plan.name}
-                </span>
-              </div>
+              <p className="text-sm font-bold text-white truncate">{displayName}</p>
+              <p className="text-[11px] text-slate-400 truncate mt-0.5">{displayEmail}</p>
             </div>
           )}
           {!collapsed && (
-            <button className="p-1.5 text-slate-500 hover:text-error-400 transition-colors">
-              <LogOut size={18} />
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-lg text-slate-400 hover:bg-error-500/10 hover:text-error-400 transition-all duration-200 group"
+              title="Log out"
+            >
+              <LogOut size={18} className="group-hover:scale-110 transition-transform" />
             </button>
           )}
         </div>
